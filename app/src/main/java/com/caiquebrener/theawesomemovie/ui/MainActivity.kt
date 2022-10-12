@@ -2,7 +2,6 @@ package com.caiquebrener.theawesomemovie.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -36,12 +35,8 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
     private fun setupToolBar() {
-        appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.listMoviesFragment, R.id.moviesDetailsFragment),drawerLayout)
+        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 }
