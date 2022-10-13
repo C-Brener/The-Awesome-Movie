@@ -16,6 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/moviesDetailsFragment"
+        android:name="com.caiquebrener.theawesomemovie.ui.moviesdetails.MoviesDetailsFragment"
         android:label="Movies Details"
         tools:layout="@layout/fragment_movies_details" />
 </navigation>
