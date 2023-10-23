@@ -6,19 +6,8 @@ import com.caiquebrener.theawesomemovie.databinding.CardItemMovieBinding
 
 class ListMoviesViewHolder(private val binding: CardItemMovieBinding) :
     RecyclerView.ViewHolder(binding.root) {
-
     fun bindingHolder(movies: Movies) {
-        binding.titleMovieCard.text = movies.title
-        binding.descriptionMovieCard.text = movies.description
-        binding.imageMovieCard.setImageResource(movies.image)
-
+        binding.movies = movies
     }
-
-    init {
-        binding.detailsMovie.setOnClickListener {
-            binding.detailsMovie.text = "Bla"
-        }
-    }
-
 
 }

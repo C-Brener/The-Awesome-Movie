@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -15,14 +16,18 @@ import com.caiquebrener.theawesomemovie.ui.viewmodel.MoviesViewModel
 
 
 class ListMoviesFragment : Fragment() {
-    private var _binding: FragmentListMoviesBinding? = null
-    val viewModel: MoviesViewModel by activityViewModels()
-    val binding get() = _binding!!
+    private lateinit var binding: FragmentListMoviesBinding
+    private val viewModel: MoviesViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentListMoviesBinding.inflate(inflater, container, false)
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_list_movies,
+            container,
+            false
+        )
         return binding.root
     }
 
@@ -40,7 +45,7 @@ class ListMoviesFragment : Fragment() {
         binding.recyclerView.adapter = moviesAdapter
     }
 
-    private fun setupMockList() = listOf<Movies>(
+    private fun setupMockList() = listOf(
         Movies("Boa noite", image = R.drawable.ic_launcher_background, "Teste"),
         Movies(
             "Boa noite", image = R.drawable.ic_baseline_menu_24, "Teste"
