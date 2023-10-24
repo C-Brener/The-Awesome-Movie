@@ -9,5 +9,4 @@ class ListMoviesViewHolder(private val binding: CardItemMovieBinding) :
     fun bindingHolder(movies: Movies) {
         binding.movies = movies
     }
-
 }
