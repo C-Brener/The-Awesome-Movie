@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.caiquebrener.theawesomemovie.R
-import com.caiquebrener.theawesomemovie.data.model.Movies
 import com.caiquebrener.theawesomemovie.databinding.FragmentListMoviesBinding
 import com.caiquebrener.theawesomemovie.ui.listmovies.recyclerview.ListMoviesAdapter
+import com.caiquebrener.theawesomemovie.ui.utils.ScreenStateEnum
 import com.caiquebrener.theawesomemovie.ui.viewmodel.MoviesViewModel
 
 
@@ -33,23 +33,38 @@ class ListMoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
+        setupObserver()
+    }
+
+    private fun setupObserver() {
+        viewModel.stateScreen.observe(viewLifecycleOwner) { dataState ->
+            when (dataState.state) {
+                ScreenStateEnum.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    setupRecyclerView()
+                }
+
+                ScreenStateEnum.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                else -> {
+                    binding.recyclerView.visibility = View.GONE
+
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {
-        val moviesAdapter = ListMoviesAdapter(setupMockList()) { movies ->
-            viewModel.name.postValue(movies)
-            findNavController().navigate(ListMoviesFragmentDirections.actionListMoviesFragmentToMoviesDetailsFragment())
+        viewModel.listMovies.observe(viewLifecycleOwner) { listItems ->
+            val moviesAdapter = ListMoviesAdapter(listItems) { movies ->
+                viewModel.selectedMovie(movies)
+                findNavController().navigate(ListMoviesFragmentDirections.actionListMoviesFragmentToMoviesDetailsFragment())
+            }
+            binding.recyclerView.adapter = moviesAdapter
         }
-
-        binding.recyclerView.adapter = moviesAdapter
     }
 
-    private fun setupMockList() = listOf(
-        Movies("Boa noite", image = R.drawable.ic_launcher_background, "Teste"),
-        Movies(
-            "Boa noite", image = R.drawable.ic_baseline_menu_24, "Teste"
-        ),
-        Movies("Boa noite", image = R.drawable.ic_launcher_background, "Teste"),
-    )
+
 }
